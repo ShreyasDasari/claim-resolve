@@ -16,6 +16,10 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
 
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
   --radius: 0.625rem;
 }
 
@@ -32,6 +36,10 @@
   --primary-foreground: oklch(0.16 0.012 250);
   --accent: oklch(0.78 0.12 200);
   --accent-foreground: oklch(0.16 0.012 250);
+
+  --success: oklch(0.74 0.15 155);
+  --warning: oklch(0.80 0.14 85);
+  --danger: oklch(0.68 0.17 35);
 }
 
 * {
@@ -83,6 +91,26 @@ body {
   [data-cr-line],
   [data-cr-glow],
   [data-cr-flag] {
+    animation: none !important;
+  }
+}
+
+/* Trace player step reveal */
+@keyframes cr-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.cr-step-in {
+  animation: cr-step-in 0.35s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cr-step-in {
     animation: none !important;
   }
 }
