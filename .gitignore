@@ -1,0 +1,13 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/logs/
+.DS_Store
+.llm_cache.json
+data/raw/
+dbt_project/.user.yml
+dbt_project/profiles.yml

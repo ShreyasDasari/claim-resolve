@@ -1,0 +1,10 @@
+Faker==40.23.0
+pandas==2.3.3
+python-dotenv==1.2.2
+snowflake-connector-python==4.6.0
+dbt-core==1.11.11
+dbt-snowflake==1.11.6
+langgraph==1.2.6
+langchain-core==1.4.8
+langchain-google-genai==4.2.5
+langchain-groq==1.1.3
