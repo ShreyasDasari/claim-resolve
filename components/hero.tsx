@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { Github, ArrowRight, Play } from "lucide-react"
+import { EntityGraph } from "@/components/entity-graph"
 
 export function Hero() {
   return (
@@ -16,7 +17,8 @@ export function Hero() {
         }}
       />
 
-      <div className="relative mx-auto max-w-6xl px-6 py-24 md:py-32">
+      <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-6 py-24 md:py-32 lg:grid-cols-[1fr_minmax(0,420px)]">
+        <div>
         <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 font-mono text-xs text-muted-foreground">
           <span className="inline-block h-1.5 w-1.5 rounded-full bg-accent" aria-hidden="true" />
           Multi-agent entity resolution for P&amp;C insurance
@@ -61,6 +63,12 @@ export function Hero() {
             <Github className="h-4 w-4" />
             Source
           </a>
+        </div>
+        </div>
+
+        {/* live entity-resolution graph */}
+        <div className="hidden lg:block">
+          <EntityGraph />
         </div>
       </div>
     </section>

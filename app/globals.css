@@ -47,3 +47,42 @@ body {
   color: var(--foreground);
   -webkit-font-smoothing: antialiased;
 }
+
+/* Entity-resolution graph: organic node drift (transform/opacity only) */
+@keyframes cr-drift-a {
+  0% { transform: translate(0px, 0px); }
+  50% { transform: translate(7px, -9px); }
+  100% { transform: translate(-5px, 6px); }
+}
+@keyframes cr-drift-b {
+  0% { transform: translate(0px, 0px); }
+  50% { transform: translate(-8px, -5px); }
+  100% { transform: translate(6px, 8px); }
+}
+@keyframes cr-drift-c {
+  0% { transform: translate(0px, 0px); }
+  50% { transform: translate(5px, 7px); }
+  100% { transform: translate(-7px, -4px); }
+}
+@keyframes cr-draw {
+  from { stroke-dashoffset: var(--cr-len); }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes cr-glow {
+  0% { opacity: 0; transform: scale(0.6); }
+  40% { opacity: 0.7; transform: scale(1.4); }
+  100% { opacity: 0; transform: scale(2); }
+}
+@keyframes cr-flag {
+  0%, 100% { opacity: 0; transform: scale(0.8); }
+  35% { opacity: 0.85; transform: scale(1.6); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-cr-node],
+  [data-cr-line],
+  [data-cr-glow],
+  [data-cr-flag] {
+    animation: none !important;
+  }
+}
