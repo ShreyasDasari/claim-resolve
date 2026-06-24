@@ -1,0 +1,250 @@
+{
+  "run_id": "run_df8a148b83f1",
+  "generated_at": "2026-06-24T21:57:46.824420+00:00",
+  "cases": [
+    {
+      "case_id": "case_001",
+      "case_type": "clean_match",
+      "source_records": [
+        {
+          "carrier": "meridian_mutual",
+          "raw_fields": {
+            "record_id": "MER-0001",
+            "claimant_name": "Margaret Chen",
+            "dob": "03/14/1981",
+            "ssn_last4": "5521",
+            "street_address": "118 Birchwood Lane",
+            "city": "Denver",
+            "state": "CO",
+            "zip": "80202",
+            "claim_type": "AUTO",
+            "loss_date": "10/03/2025",
+            "claim_amount": "18192.41"
+          }
+        },
+        {
+          "carrier": "atlas_underwriters",
+          "raw_fields": {
+            "record_id": "ATL-0001",
+            "policyholder_full_name": "Chen, Margaret",
+            "date_of_birth": "1981-03-14",
+            "ssn_last4": "5521",
+            "mailing_address": "118 Birchwood Lane",
+            "city": "Denver",
+            "state_full": "Colorado",
+            "zip_code": "80202",
+            "claim_category": "auto",
+            "claim_filed_on": "2024-07-11",
+            "loss_amount": "1480.29"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "agent": "schema_mapping",
+          "input_summary": "Raw record from meridian_mutual (record_id=MER-0001) and atlas_underwriters (record_id=ATL-0001)",
+          "reasoning": "[meridian_mutual] The claimant_name field was mapped to first_name, but it should be split into first_name and last_name. However, given the format of the claimant_name field, it appears to be in the 'first last' order. The state field is already in the 2-letter code format, which matches the canonical schema. The loss_date field was mapped to claim_date, assuming 'loss' refers to the date of the claim event. [atlas_underwriters] The policyholder_full_name field was not directly mapped to either first_name or last_name because it contains both, in a 'last_name, first_name' format. To properly map this field, additional processing would be required to split the full name into separate first and last names. The state_full field was mapped to the state field, but in a real-world scenario, it would be more standard to use the 2-letter state code, however, the canonical target fields did not specify this. The claim_category field was mapped to claim_type, assuming that the vocabulary used is compatible or can be translated to the target system's claim type vocabulary.",
+          "output_summary": "Canonical A: {'first_name': 'Margaret', 'last_name': 'Chen', 'dob': '1981-03-14', 'ssn_last4': '5521', 'address_line1': '118 Birchwood Lane', 'city': 'Denver', 'state': 'CO', 'zip_code': '80202', 'claim_type': 'auto', 'claim_date': '2025-10-03', 'claim_amount': 18192.41} | Canonical B: {'first_name': 'Margaret', 'last_name': 'Chen', 'dob': '1981-03-14', 'ssn_last4': '5521', 'address_line1': '118 Birchwood Lane', 'city': 'Denver', 'state': 'CO', 'zip_code': '80202', 'claim_type': 'auto', 'claim_date': '2024-07-11', 'claim_amount': 1480.29}",
+          "confidence": 1.0
+        },
+        {
+          "agent": "entity_resolution",
+          "input_summary": "Canonical record from meridian_mutual vs canonical record from atlas_underwriters: comparing names, DOB, SSN-last-4, and address.",
+          "reasoning": "The records have matching first and last names, dates of birth, addresses, and zip codes, which strongly suggests they belong to the same person. The matching SSN-last-4 field provides additional support, although it is not conclusive on its own. The difference in claim dates and amounts is not surprising given that they are from different carriers and may represent separate incidents. Overall, the combination of matching fields provides strong evidence that these records are for the same person.",
+          "output_summary": "matched=True, confidence=0.9",
+          "confidence": 0.9
+        },
+        {
+          "agent": "conflict_resolver",
+          "input_summary": "Entity-resolution verdict (matched=True, confidence=0.9) plus conflicting fields: []",
+          "reasoning": "Since there are no conflicting fields between the two records, no resolutions are necessary. The upstream agent's confidence of 0.9 that the records belong to the same person is accepted, and the records can be considered as belonging to Margaret Chen. The matching fields, including names, date of birth, address, and SSN-last-4, provide strong evidence for this decision. No further action is required to resolve any conflicts.",
+          "output_summary": "flagged_for_review=False, resolutions=[]",
+          "confidence": 0.9
+        }
+      ],
+      "final_result": {
+        "matched": true,
+        "canonical_entity": {
+          "first_name": "Margaret",
+          "last_name": "Chen",
+          "dob": "1981-03-14",
+          "ssn_last4": "5521",
+          "address_line1": "118 Birchwood Lane",
+          "city": "Denver",
+          "state": "CO",
+          "zip_code": "80202",
+          "claims": [
+            {
+              "claim_type": "auto",
+              "claim_date": "2025-10-03",
+              "claim_amount": 18192.41
+            },
+            {
+              "claim_type": "auto",
+              "claim_date": "2024-07-11",
+              "claim_amount": 1480.29
+            }
+          ]
+        },
+        "confidence": 0.9,
+        "flagged_for_review": false
+      }
+    },
+    {
+      "case_id": "case_002",
+      "case_type": "flagged_for_review",
+      "source_records": [
+        {
+          "carrier": "meridian_mutual",
+          "raw_fields": {
+            "record_id": "MER-0003",
+            "claimant_name": "Robert Williams",
+            "dob": "09/12/1968",
+            "ssn_last4": "1190",
+            "street_address": "27 Crestline Dr",
+            "city": "Columbus",
+            "state": "OH",
+            "zip": "43004",
+            "claim_type": "AUTO",
+            "loss_date": "12/13/2025",
+            "claim_amount": "20832.02"
+          }
+        },
+        {
+          "carrier": "atlas_underwriters",
+          "raw_fields": {
+            "record_id": "ATL-0002",
+            "policyholder_full_name": "Williams, Robert",
+            "date_of_birth": "1968-12-09",
+            "ssn_last4": "1190",
+            "mailing_address": "27 Crestline Dr Apt 2",
+            "city": "Columbus",
+            "state_full": "Ohio",
+            "zip_code": "43004",
+            "claim_category": "property",
+            "claim_filed_on": "2025-10-30",
+            "loss_amount": "64771.4"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "agent": "schema_mapping",
+          "input_summary": "Raw record from meridian_mutual (record_id=MER-0003) and atlas_underwriters (record_id=ATL-0002)",
+          "reasoning": "[meridian_mutual] The claimant_name field was mapped to first_name, but it should be split into first_name and last_name. However, given the format of the claimant_name field, it appears to be in the 'first last' order. The state field is already in the 2-letter code format, which matches the canonical schema. The loss_date field was mapped to claim_date, assuming 'loss' refers to the date of the claim event. [atlas_underwriters] The policyholder_full_name field was not directly mapped to either first_name or last_name because it contains both, in a 'last_name, first_name' format. To properly map this field, additional processing would be required to split the full name into separate first and last names. The state_full field was mapped to the state field, but in a real-world scenario, it would be more standard to use the 2-letter state code, however, the canonical target fields did not specify this. The claim_category field was mapped to claim_type, assuming that the vocabulary used is compatible or can be translated to the target system's claim type vocabulary.",
+          "output_summary": "Canonical A: {'first_name': 'Robert', 'last_name': 'Williams', 'dob': '1968-09-12', 'ssn_last4': '1190', 'address_line1': '27 Crestline Dr', 'city': 'Columbus', 'state': 'OH', 'zip_code': '43004', 'claim_type': 'auto', 'claim_date': '2025-12-13', 'claim_amount': 20832.02} | Canonical B: {'first_name': 'Robert', 'last_name': 'Williams', 'dob': '1968-12-09', 'ssn_last4': '1190', 'address_line1': '27 Crestline Dr Apt 2', 'city': 'Columbus', 'state': 'OH', 'zip_code': '43004', 'claim_type': 'property', 'claim_date': '2025-10-30', 'claim_amount': 64771.4}",
+          "confidence": 1.0
+        },
+        {
+          "agent": "entity_resolution",
+          "input_summary": "Canonical record from meridian_mutual vs canonical record from atlas_underwriters: comparing names, DOB, SSN-last-4, and address.",
+          "reasoning": "The records have the same first and last name, and the same SSN last 4 digits, which is supportive but not conclusive. However, the dates of birth are different, which is a strong indicator that they are not the same person. Additionally, the address is similar but not identical, with Record B including an apartment number that is not present in Record A. Overall, the differences in date of birth and address outweigh the similarities in name and SSN last 4 digits, suggesting that these records are likely for different individuals.",
+          "output_summary": "matched=False, confidence=0.2",
+          "confidence": 0.2
+        },
+        {
+          "agent": "conflict_resolver",
+          "input_summary": "Entity-resolution verdict (matched=False, confidence=0.2) plus conflicting fields: ['dob', 'address_line1']",
+          "reasoning": "The human reviewer should examine the similarities in the first and last name, as well as the matching SSN last 4 digits, which suggest a potential match. However, the differences in date of birth and address line 1, including the presence of an apartment number in one record, raise concerns that these may be records for different individuals. To resolve the ambiguity, the reviewer may want to consider additional information, such as other identifying documents or claims history, to determine whether the discrepancies can be explained by errors or updates. The reviewer should weigh the supportive and contradictory evidence to make an informed decision about whether these records represent the same person.",
+          "output_summary": "flagged_for_review=True, resolutions=[]",
+          "confidence": 0.2
+        }
+      ],
+      "final_result": {
+        "matched": false,
+        "canonical_entity": {},
+        "confidence": 0.2,
+        "flagged_for_review": true
+      }
+    },
+    {
+      "case_id": "case_003",
+      "case_type": "ambiguous_match_resolved",
+      "source_records": [
+        {
+          "carrier": "meridian_mutual",
+          "raw_fields": {
+            "record_id": "MER-0002",
+            "claimant_name": "Jonathan Meyer",
+            "dob": "11/02/1975",
+            "ssn_last4": "8834",
+            "street_address": "482 Oak St Apt 3",
+            "city": "Austin",
+            "state": "TX",
+            "zip": "73301",
+            "claim_type": "PROPERTY",
+            "loss_date": "01/10/2025",
+            "claim_amount": "27215.24"
+          }
+        },
+        {
+          "carrier": "coastal_premier",
+          "raw_fields": {
+            "record_id": "CST-0001",
+            "insured_first_name": "Jonathon",
+            "insured_last_name": "Myers",
+            "birth_date": "02-11-1975",
+            "ssn_last4": "8834",
+            "address_1": "482 Oak St",
+            "town": "Austin",
+            "state_abbrev": "TX",
+            "postal_code": "73301",
+            "peril_type": "Dwelling",
+            "date_reported": "03-12-2024",
+            "incurred_amount": "22370.2"
+          }
+        }
+      ],
+      "steps": [
+        {
+          "agent": "schema_mapping",
+          "input_summary": "Raw record from meridian_mutual (record_id=MER-0002) and coastal_premier (record_id=CST-0001)",
+          "reasoning": "[meridian_mutual] The claimant_name field was mapped to first_name, but it should be split into first_name and last_name. However, given the format of the claimant_name field, it appears to be in the 'first last' order. The state field is already in the 2-letter code format, which matches the canonical schema. The loss_date field was mapped to claim_date, assuming 'loss' refers to the date of the claim event. [coastal_premier] The mapping of 'insured_first_name' and 'insured_last_name' to 'first_name' and 'last_name' respectively is straightforward, as the canonical schema expects separate fields for first and last names. The 'birth_date' field is mapped to 'dob' despite the different label, as 'dob' is a common abbreviation for 'date of birth'. The 'state_abbrev' field is mapped to 'state' assuming the canonical schema can handle 2-letter state codes, and 'peril_type' is mapped to 'claim_type' as the vocabulary difference is not significant enough to warrant a separate mapping.",
+          "output_summary": "Canonical A: {'first_name': 'Jonathan', 'last_name': 'Meyer', 'dob': '1975-11-02', 'ssn_last4': '8834', 'address_line1': '482 Oak St Apt 3', 'city': 'Austin', 'state': 'TX', 'zip_code': '73301', 'claim_type': 'property', 'claim_date': '2025-01-10', 'claim_amount': 27215.24} | Canonical B: {'first_name': 'Jonathon', 'last_name': 'Myers', 'dob': '1975-11-02', 'ssn_last4': '8834', 'address_line1': '482 Oak St', 'city': 'Austin', 'state': 'TX', 'zip_code': '73301', 'claim_type': 'property', 'claim_date': '2024-12-03', 'claim_amount': 22370.2}",
+          "confidence": 1.0
+        },
+        {
+          "agent": "entity_resolution",
+          "input_summary": "Canonical record from meridian_mutual vs canonical record from coastal_premier: comparing names, DOB, SSN-last-4, and address.",
+          "reasoning": "The records share the same date of birth and a similar address, with only a minor difference in the address line. The names are also similar, with 'Jonathan' and 'Jonathon' being common variants, and 'Meyer' and 'Myers' being a possible typo or formatting difference. The matching SSN-last-4 field provides additional support, although it is not conclusive on its own. Overall, the combination of these matching fields suggests a high likelihood that the records belong to the same person.",
+          "output_summary": "matched=True, confidence=0.8",
+          "confidence": 0.8
+        },
+        {
+          "agent": "conflict_resolver",
+          "input_summary": "Entity-resolution verdict (matched=True, confidence=0.8) plus conflicting fields: ['first_name', 'last_name', 'address_line1']",
+          "reasoning": "Given the high confidence from the upstream agent that the records belong to the same person, the conflicting fields are treated as formatting differences or typos. The canonical values are chosen based on common spellings, completeness of information, and the assumption that one record may contain stale or incomplete data. The selected canonical values aim to provide a consistent and accurate representation of the individual's identity. By resolving these conflicts, a unified view of the person's records can be established.",
+          "output_summary": "flagged_for_review=False, resolutions=[{'field': 'first_name', 'canonical_value': 'Jonathan', 'reasoning': 'Jonathan is a more common spelling and is chosen as the canonical value over Jonathon'}, {'field': 'last_name', 'canonical_value': 'Meyer', 'reasoning': 'Meyer is selected as the canonical value, assuming Myers is a possible typo or formatting difference'}, {'field': 'address_line1', 'canonical_value': '482 Oak St Apt 3', 'reasoning': 'The address with the apartment number is chosen as the canonical value, assuming the other is a stale or incomplete version'}]",
+          "confidence": 0.8
+        }
+      ],
+      "final_result": {
+        "matched": true,
+        "canonical_entity": {
+          "first_name": "Jonathan",
+          "last_name": "Meyer",
+          "dob": "1975-11-02",
+          "ssn_last4": "8834",
+          "address_line1": "482 Oak St Apt 3",
+          "city": "Austin",
+          "state": "TX",
+          "zip_code": "73301",
+          "claims": [
+            {
+              "claim_type": "property",
+              "claim_date": "2025-01-10",
+              "claim_amount": 27215.24
+            },
+            {
+              "claim_type": "property",
+              "claim_date": "2024-12-03",
+              "claim_amount": 22370.2
+            }
+          ]
+        },
+        "confidence": 0.8,
+        "flagged_for_review": false
+      }
+    }
+  ]
+}
