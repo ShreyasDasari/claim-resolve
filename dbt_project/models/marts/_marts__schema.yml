@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: canonical_entities
+    description: >
+      One row per claim, normalized to a shared schema across all three
+      carriers, with deterministic cross-carrier entity grouping (matching
+      on ssn_last4 + date of birth) and a Jaro-Winkler name-similarity-based
+      confidence score. This is the table Cortex's natural-language query
+      layer runs against (see cortex/nl_query_examples.sql).
+    columns:
+      - name: entity_id
+        description: Deterministic hash of (ssn_last4, dob) — groups claims believed to belong to the same real-world claimant.
+      - name: carrier_count
+        description: Number of distinct carriers contributing a claim to this entity. Greater than 1 means the entity appears across carriers.
+      - name: match_confidence
+        description: Jaro-Winkler-based name-similarity confidence (0-1) for multi-carrier entities. Null for single-carrier (unmatched) entities.
+      - name: flagged_for_review
+        description: True when an entity spans multiple carriers but match_confidence is below 0.75 — surfaced rather than silently resolved.

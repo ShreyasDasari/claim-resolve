@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: "{{ env_var('SNOWFLAKE_SCHEMA', 'RAW') }}"
+    description: >
+      Raw landing tables loaded by ingestion/load_to_snowflake.py, which
+      simulates the role Qlik Replicate would play in production: CDC-style
+      ingestion from each carrier's source system into the warehouse, with
+      no transformation applied. Every column lands as VARCHAR.
+    tables:
+      - name: RAW_MERIDIAN_MUTUAL
+      - name: RAW_ATLAS_UNDERWRITERS
+      - name: RAW_COASTAL_PREMIER

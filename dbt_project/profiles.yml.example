@@ -1,0 +1,21 @@
+# Template for dbt's connection profile. dbt does not read this file directly —
+# copy it to ~/.dbt/profiles.yml, or run dbt with:
+#   DBT_PROFILES_DIR=dbt_project dbt run
+# after renaming this file to profiles.yml.
+#
+# Credentials are pulled from environment variables (see .env.example) so no
+# secrets are ever committed to the repo.
+
+claim_resolve:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+      role: "{{ env_var('SNOWFLAKE_ROLE') }}"
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE') }}"
+      database: "{{ env_var('SNOWFLAKE_DATABASE', 'CLAIM_RESOLVE') }}"
+      schema: "{{ env_var('SNOWFLAKE_SCHEMA', 'ANALYTICS') }}"
+      threads: 4
