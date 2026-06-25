@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  --radius: 0.625rem;
+}
+
+:root {
+  /* Dark mode primary, data-engineering aesthetic */
+  --background: oklch(0.16 0.012 250);
+  --foreground: oklch(0.96 0.005 250);
+  --card: oklch(0.20 0.014 250);
+  --card-foreground: oklch(0.96 0.005 250);
+  --muted: oklch(0.24 0.014 250);
+  --muted-foreground: oklch(0.66 0.012 250);
+  --border: oklch(0.30 0.014 250);
+  --primary: oklch(0.72 0.13 220);
+  --primary-foreground: oklch(0.16 0.012 250);
+  --accent: oklch(0.78 0.12 200);
+  --accent-foreground: oklch(0.16 0.012 250);
+
+  --success: oklch(0.74 0.15 155);
+  --warning: oklch(0.80 0.14 85);
+  --danger: oklch(0.68 0.17 35);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  background-color: var(--background);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Entity-resolution graph: organic node drift (transform/opacity only) */
+@keyframes cr-drift-a {
+  0% { transform: translate(0px, 0px); }
+  50% { transform: translate(7px, -9px); }
+  100% { transform: translate(-5px, 6px); }
+}
+@keyframes cr-drift-b {
+  0% { transform: translate(0px, 0px); }
+  50% { transform: translate(-8px, -5px); }
+  100% { transform: translate(6px, 8px); }
+}
+@keyframes cr-drift-c {
+  0% { transform: translate(0px, 0px); }
+  50% { transform: translate(5px, 7px); }
+  100% { transform: translate(-7px, -4px); }
+}
+@keyframes cr-draw {
+  from { stroke-dashoffset: var(--cr-len); }
+  to { stroke-dashoffset: 0; }
+}
+@keyframes cr-glow {
+  0% { opacity: 0; transform: scale(0.6); }
+  40% { opacity: 0.7; transform: scale(1.4); }
+  100% { opacity: 0; transform: scale(2); }
+}
+@keyframes cr-flag {
+  0%, 100% { opacity: 0; transform: scale(0.8); }
+  35% { opacity: 0.85; transform: scale(1.6); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-cr-node],
+  [data-cr-line],
+  [data-cr-glow],
+  [data-cr-flag] {
+    animation: none !important;
+  }
+}
+
+/* Trace player step reveal */
+@keyframes cr-step-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.cr-step-in {
+  animation: cr-step-in 0.35s ease-out both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cr-step-in {
+    animation: none !important;
+  }
+}
