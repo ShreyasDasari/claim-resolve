@@ -1,6 +1,7 @@
 import Link from "next/link"
-import { Github, ArrowRight, Play } from "lucide-react"
+import { Github, ArrowRight } from "lucide-react"
 import { EntityGraph } from "@/components/entity-graph"
+import { DemoModal } from "@/components/demo-modal"
 
 export function Hero() {
   return (
@@ -46,13 +47,7 @@ export function Hero() {
             View Dashboard
             <ArrowRight className="h-4 w-4" />
           </Link>
-          <Link
-            href="/demo"
-            className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-card px-5 py-3 text-sm font-medium text-foreground transition-colors hover:border-primary/50"
-          >
-            <Play className="h-4 w-4" />
-            Watch Working Demo
-          </Link>
+          <DemoModal />
           <a
             href="https://github.com/ShreyasDasari/claim-resolve"
             target="_blank"
